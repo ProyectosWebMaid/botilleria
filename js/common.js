@@ -239,9 +239,10 @@ function getVoucherUsageInfo(data, voucher) {
     receipt,
     relatedSales,
     lastSale,
-    cashier: lastSale ? lastSale.cashier : null,
-    paymentMethod: receipt && receipt.payment_method ? receipt.payment_method : (lastSale ? lastSale.payment_method : null),
+    cashier: voucher.charged_by || (lastSale ? lastSale.cashier : null),
+    paymentMethod: voucher.payment_method || (receipt && receipt.payment_method ? receipt.payment_method : (lastSale ? lastSale.payment_method : null)),
     total: receipt ? receipt.amount : (voucher ? voucher.total : 0),
-    date: receipt ? receipt.created_at : (lastSale ? lastSale.created_at : (voucher ? voucher.created_at : null))
+    date: voucher.charged_at || (receipt ? receipt.created_at : (lastSale ? lastSale.created_at : (voucher ? voucher.created_at : null))),
+    receiptId: voucher.receipt_id || (receipt ? receipt.id : null)
   };
 }

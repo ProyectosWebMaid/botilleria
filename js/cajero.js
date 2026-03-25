@@ -2,6 +2,7 @@ const user = requireRole("Cajero");
 let currentVoucher = null;
 let currentReceiptHtml = null;
 let receiptWindow = null;
+let isCharging = false;
 
 function selectedPaymentMethod() {
   const checked = document.querySelector('input[name="paymentMethod"]:checked');
@@ -41,10 +42,20 @@ function setChargeState(enabled, label) {
   btn.textContent = label;
 }
 
+function isVoucherAlreadyCharged(voucher) {
+  return !!(voucher && (
+    voucher.status !== "Pendiente" ||
+    voucher.receipt_id ||
+    voucher.charged_at ||
+    voucher.charged_by
+  ));
+}
+
 function resetForNewSale() {
   currentVoucher = null;
   currentReceiptHtml = null;
   receiptWindow = null;
+  isCharging = false;
 
   const input = document.getElementById("voucherCodeInput");
   input.value = "";
@@ -117,19 +128,20 @@ function renderVoucherUsageAlert(voucher) {
   const data = loadData();
   const info = getVoucherUsageInfo(data, voucher);
 
-  if (voucher.status !== "Pendiente") {
+  if (isVoucherAlreadyCharged(voucher)) {
     setChargeState(false, "⚠️ Voucher ya cobrado");
     setStatusBox("danger", "Este voucher ya fue cobrado", [
       `Voucher: <strong>${voucher.voucher_code}</strong>`,
       `Fecha de cobro: <strong>${info && info.date ? info.date : "No disponible"}</strong>`,
       `Cajero: <strong>${info && info.cashier ? info.cashier : "No disponible"}</strong>`,
       `Forma de pago: <strong>${info && info.paymentMethod ? info.paymentMethod : "No disponible"}</strong>`,
+      `Boleta: <strong>${info && info.receiptId ? info.receiptId : "No disponible"}</strong>`,
       `Total cobrado: <strong>${money(info && info.total ? info.total : voucher.total)}</strong>`
     ]);
     return;
   }
 
-  setChargeState(true, "Cobrar y emitir boleta");
+  setChargeState(!isCharging, isCharging ? "Procesando..." : "Cobrar y emitir boleta");
   setStatusBox("success", "Voucher listo para cobro", [
     `Voucher: <strong>${voucher.voucher_code}</strong>`,
     `Vendedor: <strong>${voucher.seller}</strong>`,
@@ -153,13 +165,12 @@ function lookupVoucher(inputCode) {
   `).join("");
 
   document.getElementById("voucherTotal").textContent = money(voucher.total);
-
   document.getElementById("downloadReceiptBtn").style.display = "none";
   document.getElementById("printReceiptBtn").style.display = "none";
 
   renderVoucherUsageAlert(voucher);
 
-  if (voucher.status !== "Pendiente") {
+  if (isVoucherAlreadyCharged(voucher)) {
     alert("⚠️ Este voucher ya fue cobrado. No se puede procesar nuevamente.");
   }
 }
@@ -200,11 +211,11 @@ voucherInput.addEventListener("input", () => {
       lookupVoucher(digits);
     } catch (error) {
       clearStatusBox();
-      setChargeState(true, "Cobrar y emitir boleta");
+      if (!isCharging) setChargeState(true, "Cobrar y emitir boleta");
     }
   } else {
     clearStatusBox();
-    setChargeState(true, "Cobrar y emitir boleta");
+    if (!isCharging) setChargeState(true, "Cobrar y emitir boleta");
   }
 });
 
@@ -219,7 +230,7 @@ document.getElementById("voucherLookupForm").addEventListener("submit", (e) => {
 
 document.getElementById("scanVisualBtn").addEventListener("click", () => {
   const data = loadData();
-  const pending = data.vouchers.find(item => item.status === "Pendiente");
+  const pending = data.vouchers.find(item => !isVoucherAlreadyCharged(item));
   if (!pending) {
     alert("No hay voucher pendientes para simular escaneo.");
     return;
@@ -239,6 +250,8 @@ document.querySelectorAll(".payment-option").forEach((label) => {
 });
 
 document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
+  if (isCharging) return;
+
   if (!currentVoucher) {
     alert("Primero busca un voucher.");
     return;
@@ -253,7 +266,7 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
     return;
   }
 
-  if (freshVoucher.status !== "Pendiente") {
+  if (isVoucherAlreadyCharged(freshVoucher)) {
     currentVoucher = freshVoucher;
     alert("⚠️ Este voucher ya fue cobrado. No se puede procesar nuevamente.");
     renderVoucherUsageAlert(freshVoucher);
@@ -272,6 +285,9 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
     }
   }
 
+  isCharging = true;
+  setChargeState(false, "Procesando...");
+
   freshVoucher.items.forEach(item => {
     const product = data.products.find(p => p.id === item.product_id);
     product.stock -= item.quantity;
@@ -289,8 +305,6 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
     });
   });
 
-  freshVoucher.status = "Cobrado";
-
   const receipt = {
     id: data.receipts.length ? Math.max(...data.receipts.map(item => item.id)) + 1 : 321,
     voucher_id: freshVoucher.id,
@@ -300,13 +314,24 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
     payment_method: paymentMethod
   };
   data.receipts.push(receipt);
+
+  freshVoucher.status = "Cobrado";
+  freshVoucher.charged_at = nowString();
+  freshVoucher.charged_by = user.email;
+  freshVoucher.payment_method = paymentMethod;
+  freshVoucher.receipt_id = receipt.id;
+
   saveData(data);
 
   currentVoucher = freshVoucher;
   currentReceiptHtml = buildReceiptHtml(receipt, freshVoucher, user.email, paymentMethod);
 
   const opened = openReceiptPage(currentReceiptHtml);
-  if (!opened) return;
+  if (!opened) {
+    isCharging = false;
+    renderVoucherUsageAlert(freshVoucher);
+    return;
+  }
 
   renderVoucherUsageAlert(freshVoucher);
   renderCajero();
