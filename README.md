@@ -23,3 +23,12 @@ Esta versión mantiene el proyecto separado por archivos y corrige el problema d
 ## Nuevo en esta versión
 - Cada menú de Administrador, Cajero y Supervisor ahora muestra un ejemplo visual de uso.
 - Se agregó navegación por pestañas dentro de cada panel.
+
+
+## v4 implementada
+- Formularios funcionales con localStorage.
+- Alta y eliminación de productos.
+- Registro real de ventas desde cajero.
+- Descuento automático de stock.
+- Generación automática de boletas.
+- Reportes y panel supervisor conectados a los mismos datos.
