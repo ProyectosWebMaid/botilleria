@@ -151,14 +151,15 @@ function renderVoucherUsageAlert(voucher) {
 
 function lookupVoucher(inputCode) {
   const data = loadData();
-  const digits = String(inputCode || "").replace(/\D/g, "").slice(-4);
-  const voucher = findVoucherBySuffix(data, digits);
-  if (!voucher) throw new Error("Voucher no encontrado.");
+  const result = resolveVoucherFromInput(data, inputCode);
+  if (result.error || !result.voucher) throw new Error(result.error || "Voucher no encontrado.");
 
+  const voucher = result.voucher;
   currentVoucher = voucher;
+
   document.getElementById("voucherLoaded").style.display = "block";
   document.getElementById("voucherMeta").textContent =
-    `Vendedor: ${voucher.seller} | Fecha: ${voucher.created_at} | Estado: ${voucher.status}`;
+    `Vendedor: ${voucher.seller} | Fecha: ${voucher.created_at} | Estado: ${voucher.status} | Código: ${voucher.voucher_code}`;
 
   document.getElementById("voucherItemsTable").innerHTML = voucher.items.map(item => `
     <tr><td>${item.product}</td><td>${item.quantity}</td><td>${money(item.total)}</td></tr>
@@ -204,16 +205,17 @@ function openReceiptPage(receiptHtml) {
 
 const voucherInput = document.getElementById("voucherCodeInput");
 voucherInput.addEventListener("input", () => {
-  const digits = voucherInput.value.replace(/\D/g, "").slice(-4);
-  voucherInput.value = digits;
-  if (digits.length === 4) {
+  const raw = voucherInput.value.trim().toUpperCase();
+  voucherInput.value = raw;
+
+  if (/^\d{4}$/.test(raw)) {
     try {
-      lookupVoucher(digits);
+      lookupVoucher(raw);
     } catch (error) {
       clearStatusBox();
       if (!isCharging) setChargeState(true, "Cobrar y emitir boleta");
     }
-  } else {
+  } else if (raw.length === 0) {
     clearStatusBox();
     if (!isCharging) setChargeState(true, "Cobrar y emitir boleta");
   }
@@ -222,7 +224,7 @@ voucherInput.addEventListener("input", () => {
 document.getElementById("voucherLookupForm").addEventListener("submit", (e) => {
   e.preventDefault();
   try {
-    lookupVoucher(document.getElementById("voucherCodeInput").value.replace(/\D/g, "").slice(-4));
+    lookupVoucher(document.getElementById("voucherCodeInput").value.trim());
   } catch (error) {
     alert(error.message);
   }
@@ -235,9 +237,8 @@ document.getElementById("scanVisualBtn").addEventListener("click", () => {
     alert("No hay voucher pendientes para simular escaneo.");
     return;
   }
-  const suffix = String(voucherSuffixNumber(pending.voucher_code) || 0).padStart(4, "0");
-  document.getElementById("voucherCodeInput").value = suffix;
-  lookupVoucher(suffix);
+  document.getElementById("voucherCodeInput").value = pending.voucher_code;
+  lookupVoucher(pending.voucher_code);
 });
 
 document.querySelectorAll(".payment-option").forEach((label) => {
@@ -271,7 +272,7 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
     alert("⚠️ Este voucher ya fue cobrado. No se puede procesar nuevamente.");
     renderVoucherUsageAlert(freshVoucher);
     document.getElementById("voucherMeta").textContent =
-      `Vendedor: ${freshVoucher.seller} | Fecha: ${freshVoucher.created_at} | Estado: ${freshVoucher.status}`;
+      `Vendedor: ${freshVoucher.seller} | Fecha: ${freshVoucher.created_at} | Estado: ${freshVoucher.status} | Código: ${freshVoucher.voucher_code}`;
     return;
   }
 

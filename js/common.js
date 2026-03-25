@@ -246,3 +246,41 @@ function getVoucherUsageInfo(data, voucher) {
     receiptId: voucher.receipt_id || (receipt ? receipt.id : null)
   };
 }
+
+
+function normalizeVoucherCode(input) {
+  return String(input || "").trim().toUpperCase();
+}
+
+function resolveVoucherFromInput(data, input) {
+  const raw = normalizeVoucherCode(input);
+  if (!raw) {
+    return { voucher: null, error: "Ingresa un código de voucher." };
+  }
+
+  const exact = data.vouchers.find(item => normalizeVoucherCode(item.voucher_code) === raw);
+  if (exact) {
+    return { voucher: exact, error: null, mode: "exact" };
+  }
+
+  const digits = raw.replace(/\D/g, "");
+  if (!digits) {
+    return { voucher: null, error: "Código de voucher inválido." };
+  }
+
+  const suffix = digits.slice(-4).padStart(4, "0");
+  const matches = data.vouchers.filter(item => String(item.voucher_code || "").endsWith(suffix));
+
+  if (matches.length === 1) {
+    return { voucher: matches[0], error: null, mode: "suffix" };
+  }
+
+  if (matches.length > 1) {
+    return {
+      voucher: null,
+      error: `Hay ${matches.length} vouchers que terminan en ${suffix}. Pega el código completo para evitar cobrar el voucher equivocado.`
+    };
+  }
+
+  return { voucher: null, error: "Voucher no encontrado." };
+}
