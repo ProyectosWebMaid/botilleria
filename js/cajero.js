@@ -1,7 +1,7 @@
 const user = requireRole("Cajero");
 let currentVoucher = null;
-let currentReceiptUrl = null;
 let currentReceiptHtml = null;
+let receiptWindow = null;
 
 function selectedPaymentMethod() {
   const checked = document.querySelector('input[name="paymentMethod"]:checked');
@@ -10,8 +10,8 @@ function selectedPaymentMethod() {
 
 function resetForNewSale() {
   currentVoucher = null;
-  currentReceiptUrl = null;
   currentReceiptHtml = null;
+  receiptWindow = null;
 
   const input = document.getElementById("voucherCodeInput");
   input.value = "";
@@ -20,7 +20,15 @@ function resetForNewSale() {
   document.getElementById("voucherLoaded").style.display = "none";
   document.getElementById("downloadReceiptBtn").style.display = "none";
   document.getElementById("printReceiptBtn").style.display = "none";
+  document.getElementById("voucherMeta").textContent = "";
+  document.getElementById("voucherItemsTable").innerHTML = "";
+  document.getElementById("voucherTotal").textContent = "$0";
 }
+
+window.onReceiptWindowClosed = function () {
+  renderCajero();
+  resetForNewSale();
+};
 
 function renderCajero() {
   const data = loadData();
@@ -86,10 +94,35 @@ function lookupVoucher(code) {
 
   document.getElementById("voucherTotal").textContent = money(voucher.total);
 
-  if (voucher.status !== "Pendiente") {
-    document.getElementById("downloadReceiptBtn").style.display = "none";
-    document.getElementById("printReceiptBtn").style.display = "none";
+  document.getElementById("downloadReceiptBtn").style.display = "none";
+  document.getElementById("printReceiptBtn").style.display = "none";
+}
+
+function openReceiptPage(receiptHtml) {
+  receiptWindow = window.open("", "_blank");
+  if (!receiptWindow) {
+    alert("El navegador bloqueó la ventana de la boleta.");
+    return false;
   }
+
+  const finalHtml = receiptHtml.replace(
+    "</body>",
+    `<script>
+      window.addEventListener("beforeunload", function () {
+        try {
+          if (window.opener && !window.opener.closed && window.opener.onReceiptWindowClosed) {
+            window.opener.onReceiptWindowClosed();
+          }
+        } catch (e) {}
+      });
+    <\/script></body>`
+  );
+
+  receiptWindow.document.open();
+  receiptWindow.document.write(finalHtml);
+  receiptWindow.document.close();
+  receiptWindow.focus();
+  return true;
 }
 
 document.getElementById("voucherLookupForm").addEventListener("submit", (e) => {
@@ -173,57 +206,24 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
   saveData(data);
 
   currentReceiptHtml = buildReceiptHtml(receipt, currentVoucher, user.email, paymentMethod);
-  currentReceiptUrl = downloadHtml(`boleta-${receipt.id}.html`, currentReceiptHtml);
 
-  const downloadLink = document.getElementById("downloadReceiptBtn");
-  downloadLink.href = currentReceiptUrl;
-  downloadLink.download = `boleta-${receipt.id}.html`;
-  downloadLink.style.display = "inline-block";
-
-  const printBtn = document.getElementById("printReceiptBtn");
-  printBtn.style.display = "inline-block";
-
-  alert(`Cobro realizado. Boleta N° ${receipt.id} emitida para entregar al cliente.`);
+  const opened = openReceiptPage(currentReceiptHtml);
+  if (!opened) return;
 
   renderCajero();
-
-  setTimeout(() => {
-    if (downloadLink.href) {
-      downloadLink.click();
-    }
-  }, 150);
-
-  setTimeout(() => {
-    resetForNewSale();
-  }, 300);
 });
 
 document.getElementById("downloadReceiptBtn").addEventListener("click", () => {
-  if (!currentReceiptUrl) {
-    alert("Primero debes emitir una boleta.");
-  }
+  alert("Ahora la boleta se abre en una página nueva al cobrar. Desde ahí puedes imprimirla o guardarla.");
 });
 
 document.getElementById("printReceiptBtn").addEventListener("click", () => {
-  if (!currentReceiptHtml) {
-    alert("Primero debes emitir una boleta.");
+  if (!receiptWindow || receiptWindow.closed) {
+    alert("Primero debes emitir la boleta para abrirla.");
     return;
   }
-
-  const printWindow = window.open("", "_blank");
-  if (!printWindow) {
-    alert("El navegador bloqueó la ventana de impresión.");
-    return;
-  }
-
-  printWindow.document.open();
-  printWindow.document.write(currentReceiptHtml);
-  printWindow.document.close();
-  printWindow.focus();
-
-  setTimeout(() => {
-    printWindow.print();
-  }, 250);
+  receiptWindow.focus();
+  receiptWindow.print();
 });
 
 renderCajero();
