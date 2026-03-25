@@ -256,3 +256,84 @@ button:disabled,
   opacity: 0.8;
   border-color: #d1d5db !important;
 }
+
+
+:root {
+  --brand-gold: #c9a45c;
+  --brand-dark: #151930;
+}
+
+.brand-logo-wrap {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.brand-logo-wrap img {
+  width: 120px;
+  max-width: 100%;
+  height: auto;
+}
+
+.brand-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.brand-mini img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.brand-mini span {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.03em;
+}
+
+.brand-topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-topbar img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.brand-topbar h1 {
+  margin: 0 0 6px;
+}
+
+.logo-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-card img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, #7b1e1e, #a61f1f);
+}
+
+.role-pill {
+  background: #fff7e8;
+  color: #8a5b0a;
+}
+
+@media (max-width: 640px) {
+  .brand-topbar img {
+    width: 46px;
+    height: 46px;
+  }
+}
