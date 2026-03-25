@@ -228,3 +228,20 @@ function nextVoucherCode(data) {
   const next = numbers.length ? Math.max(...numbers) + 1 : 1;
   return `VCH-${next}`;
 }
+
+
+function getVoucherUsageInfo(data, voucher) {
+  if (!voucher) return null;
+  const receipt = data.receipts.find(item => item.voucher_id === voucher.id) || null;
+  const relatedSales = data.sales.filter(item => item.voucher_code === voucher.voucher_code);
+  const lastSale = relatedSales.length ? relatedSales[relatedSales.length - 1] : null;
+  return {
+    receipt,
+    relatedSales,
+    lastSale,
+    cashier: lastSale ? lastSale.cashier : null,
+    paymentMethod: receipt && receipt.payment_method ? receipt.payment_method : (lastSale ? lastSale.payment_method : null),
+    total: receipt ? receipt.amount : (voucher ? voucher.total : 0),
+    date: receipt ? receipt.created_at : (lastSale ? lastSale.created_at : (voucher ? voucher.created_at : null))
+  };
+}

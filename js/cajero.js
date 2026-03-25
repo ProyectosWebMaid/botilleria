@@ -8,6 +8,39 @@ function selectedPaymentMethod() {
   return checked ? checked.value : "Efectivo";
 }
 
+function chargeButton() {
+  return document.getElementById("chargeVoucherBtn");
+}
+
+function statusBox() {
+  return document.getElementById("voucherStatusBox");
+}
+
+function setStatusBox(kind, title, lines = []) {
+  const box = statusBox();
+  if (!box) return;
+  box.className = kind === "success" ? "status-alert success" : "status-alert";
+  box.style.display = "block";
+  box.innerHTML = `
+    <h4>${title}</h4>
+    ${lines.map(line => `<p>${line}</p>`).join("")}
+  `;
+}
+
+function clearStatusBox() {
+  const box = statusBox();
+  if (!box) return;
+  box.style.display = "none";
+  box.innerHTML = "";
+  box.className = "status-alert";
+}
+
+function setChargeState(enabled, label) {
+  const btn = chargeButton();
+  btn.disabled = !enabled;
+  btn.textContent = label;
+}
+
 function resetForNewSale() {
   currentVoucher = null;
   currentReceiptHtml = null;
@@ -23,6 +56,8 @@ function resetForNewSale() {
   document.getElementById("voucherMeta").textContent = "";
   document.getElementById("voucherItemsTable").innerHTML = "";
   document.getElementById("voucherTotal").textContent = "$0";
+  clearStatusBox();
+  setChargeState(true, "Cobrar y emitir boleta");
 }
 
 window.onReceiptWindowClosed = function () {
@@ -78,6 +113,30 @@ function renderCajero() {
   `;
 }
 
+function renderVoucherUsageAlert(voucher) {
+  const data = loadData();
+  const info = getVoucherUsageInfo(data, voucher);
+
+  if (voucher.status !== "Pendiente") {
+    setChargeState(false, "⚠️ Voucher ya cobrado");
+    setStatusBox("danger", "Este voucher ya fue cobrado", [
+      `Voucher: <strong>${voucher.voucher_code}</strong>`,
+      `Fecha de cobro: <strong>${info && info.date ? info.date : "No disponible"}</strong>`,
+      `Cajero: <strong>${info && info.cashier ? info.cashier : "No disponible"}</strong>`,
+      `Forma de pago: <strong>${info && info.paymentMethod ? info.paymentMethod : "No disponible"}</strong>`,
+      `Total cobrado: <strong>${money(info && info.total ? info.total : voucher.total)}</strong>`
+    ]);
+    return;
+  }
+
+  setChargeState(true, "Cobrar y emitir boleta");
+  setStatusBox("success", "Voucher listo para cobro", [
+    `Voucher: <strong>${voucher.voucher_code}</strong>`,
+    `Vendedor: <strong>${voucher.seller}</strong>`,
+    `Total: <strong>${money(voucher.total)}</strong>`
+  ]);
+}
+
 function lookupVoucher(inputCode) {
   const data = loadData();
   const digits = String(inputCode || "").replace(/\D/g, "").slice(-4);
@@ -97,6 +156,12 @@ function lookupVoucher(inputCode) {
 
   document.getElementById("downloadReceiptBtn").style.display = "none";
   document.getElementById("printReceiptBtn").style.display = "none";
+
+  renderVoucherUsageAlert(voucher);
+
+  if (voucher.status !== "Pendiente") {
+    alert("⚠️ Este voucher ya fue cobrado. No se puede procesar nuevamente.");
+  }
 }
 
 function openReceiptPage(receiptHtml) {
@@ -134,7 +199,12 @@ voucherInput.addEventListener("input", () => {
     try {
       lookupVoucher(digits);
     } catch (error) {
+      clearStatusBox();
+      setChargeState(true, "Cobrar y emitir boleta");
     }
+  } else {
+    clearStatusBox();
+    setChargeState(true, "Cobrar y emitir boleta");
   }
 });
 
@@ -174,7 +244,8 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
     return;
   }
   if (currentVoucher.status !== "Pendiente") {
-    alert("Este voucher ya fue cobrado.");
+    alert("⚠️ Este voucher ya fue cobrado. No se puede procesar nuevamente.");
+    renderVoucherUsageAlert(currentVoucher);
     return;
   }
 
