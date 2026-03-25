@@ -205,3 +205,26 @@ function findProductByBarcodeOrName(data, query) {
     String(item.name || "").toLowerCase().includes(q)
   ) || null;
 }
+
+
+function voucherSuffixNumber(voucherCode) {
+  const match = String(voucherCode || "").match(/(\d{4})$/);
+  return match ? Number(match[1]) : null;
+}
+
+function findVoucherBySuffix(data, suffix) {
+  const normalized = String(suffix || "").trim().padStart(4, "0");
+  return data.vouchers.find(item => String(item.voucher_code || "").endsWith(normalized)) || null;
+}
+
+function nextVoucherCode(data) {
+  const numbers = data.vouchers
+    .map(item => {
+      const match = String(item.voucher_code || "").match(/(\d+)$/);
+      return match ? Number(match[1]) : null;
+    })
+    .filter(value => value !== null);
+
+  const next = numbers.length ? Math.max(...numbers) + 1 : 1;
+  return `VCH-${next}`;
+}

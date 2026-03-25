@@ -71,7 +71,7 @@ document.getElementById("sellerNotice").style.display = "none";
 document.getElementById("generateVoucherBtn").addEventListener("click", () => {
   if (!sellerCart.length) return alert("Agrega productos antes de emitir el baucher.");
   const data = loadData();
-  const voucherCode = "VCH-" + String(Date.now()).slice(-8);
+  const voucherCode = nextVoucherCode(data);
   const voucher = {
     id: nextId(data.vouchers),
     voucher_code: voucherCode,
@@ -97,7 +97,7 @@ document.getElementById("generateVoucherBtn").addEventListener("click", () => {
   link.style.display = "inline-block";
 
   const notice = document.getElementById("sellerNotice");
-  notice.textContent = `Baucher emitido: ${voucher.voucher_code}. Ahora el cajero puede cobrarlo usando ese código.`;
+  notice.textContent = `Baucher emitido: ${voucher.voucher_code}. Ahora el cajero puede cobrarlo usando los últimos 4 dígitos de ese código.`;
   notice.style.display = "block";
 
   sellerCart = [];

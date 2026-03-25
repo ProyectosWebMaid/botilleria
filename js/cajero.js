@@ -78,9 +78,10 @@ function renderCajero() {
   `;
 }
 
-function lookupVoucher(code) {
+function lookupVoucher(inputCode) {
   const data = loadData();
-  const voucher = data.vouchers.find(item => item.voucher_code === code);
+  const digits = String(inputCode || "").replace(/\D/g, "").slice(-4);
+  const voucher = findVoucherBySuffix(data, digits);
   if (!voucher) throw new Error("Voucher no encontrado.");
 
   currentVoucher = voucher;
@@ -125,10 +126,22 @@ function openReceiptPage(receiptHtml) {
   return true;
 }
 
+const voucherInput = document.getElementById("voucherCodeInput");
+voucherInput.addEventListener("input", () => {
+  const digits = voucherInput.value.replace(/\D/g, "").slice(-4);
+  voucherInput.value = digits;
+  if (digits.length === 4) {
+    try {
+      lookupVoucher(digits);
+    } catch (error) {
+    }
+  }
+});
+
 document.getElementById("voucherLookupForm").addEventListener("submit", (e) => {
   e.preventDefault();
   try {
-    lookupVoucher(document.getElementById("voucherCodeInput").value.trim());
+    lookupVoucher(document.getElementById("voucherCodeInput").value.replace(/\D/g, "").slice(-4));
   } catch (error) {
     alert(error.message);
   }
@@ -141,8 +154,9 @@ document.getElementById("scanVisualBtn").addEventListener("click", () => {
     alert("No hay voucher pendientes para simular escaneo.");
     return;
   }
-  document.getElementById("voucherCodeInput").value = pending.voucher_code;
-  lookupVoucher(pending.voucher_code);
+  const suffix = String(voucherSuffixNumber(pending.voucher_code) || 0).padStart(4, "0");
+  document.getElementById("voucherCodeInput").value = suffix;
+  lookupVoucher(suffix);
 });
 
 document.querySelectorAll(".payment-option").forEach((label) => {
