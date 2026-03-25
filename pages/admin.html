@@ -15,13 +15,13 @@
       </div>
 
       <nav>
-        <a class="active" href="#">Dashboard</a>
-        <a href="#">Ventas</a>
-        <a href="#">Productos</a>
-        <a href="#">Stock</a>
-        <a href="#">Boletas</a>
-        <a href="#">Usuarios</a>
-        <a href="#">Reportes</a>
+        <a class="tab-link active" data-tab="dashboard" href="#">Dashboard</a>
+        <a class="tab-link" data-tab="ventas" href="#">Ventas</a>
+        <a class="tab-link" data-tab="productos" href="#">Productos</a>
+        <a class="tab-link" data-tab="stock" href="#">Stock</a>
+        <a class="tab-link" data-tab="boletas" href="#">Boletas</a>
+        <a class="tab-link" data-tab="usuarios" href="#">Usuarios</a>
+        <a class="tab-link" data-tab="reportes" href="#">Reportes</a>
       </nav>
 
       <button class="btn secondary full" id="logoutBtn">Cerrar sesión</button>
@@ -36,44 +36,170 @@
         <span class="role-pill">Administrador</span>
       </header>
 
-      <section class="stats-grid">
-        <article class="stat-box"><span>Ventas del día</span><strong>$248.900</strong></article>
-        <article class="stat-box"><span>Boletas emitidas</span><strong>36</strong></article>
-        <article class="stat-box"><span>Productos activos</span><strong>182</strong></article>
-        <article class="stat-box"><span>Usuarios del sistema</span><strong>4</strong></article>
+      <section class="tab-panel active" id="dashboard">
+        <section class="stats-grid">
+          <article class="stat-box"><span>Ventas del día</span><strong>$248.900</strong></article>
+          <article class="stat-box"><span>Boletas emitidas</span><strong>36</strong></article>
+          <article class="stat-box"><span>Productos activos</span><strong>182</strong></article>
+          <article class="stat-box"><span>Usuarios del sistema</span><strong>4</strong></article>
+        </section>
+
+        <section class="panel-grid">
+          <article class="panel-card">
+            <h3>Resumen general</h3>
+            <ul>
+              <li>Vista rápida del negocio</li>
+              <li>Acceso a ventas, stock y reportes</li>
+              <li>Control total del sistema</li>
+            </ul>
+          </article>
+
+          <article class="panel-card">
+            <h3>Últimas ventas</h3>
+            <table>
+              <thead><tr><th>Producto</th><th>Cantidad</th><th>Total</th></tr></thead>
+              <tbody>
+                <tr><td>Whisky Johnnie Walker</td><td>1</td><td>$22.990</td></tr>
+                <tr><td>Pack Cervezas Cristal</td><td>2</td><td>$11.980</td></tr>
+                <tr><td>Vino Cabernet</td><td>1</td><td>$6.500</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
       </section>
 
-      <section class="panel-grid">
-        <article class="panel-card">
-          <h3>Accesos del administrador</h3>
-          <ul>
-            <li>Crear y editar productos</li>
-            <li>Configurar precios</li>
-            <li>Gestionar stock y reposición</li>
-            <li>Emitir boletas</li>
-            <li>Crear usuarios y asignar roles</li>
-            <li>Ver reportes completos</li>
-          </ul>
-        </article>
-
-        <article class="panel-card">
-          <h3>Últimas ventas</h3>
+      <section class="tab-panel" id="ventas">
+        <div class="panel-card">
+          <h3>Ejemplo de uso: Ventas</h3>
+          <p class="section-text">Aquí el administrador puede revisar todas las ventas del día, anular una venta si fue un error y ver qué cajero la realizó.</p>
           <table>
-            <thead>
-              <tr><th>Producto</th><th>Cantidad</th><th>Total</th></tr>
-            </thead>
+            <thead><tr><th>Hora</th><th>Producto</th><th>Cajero</th><th>Total</th><th>Acción</th></tr></thead>
             <tbody>
-              <tr><td>Whisky Johnnie Walker</td><td>1</td><td>$22.990</td></tr>
-              <tr><td>Pack Cervezas Cristal</td><td>2</td><td>$11.980</td></tr>
-              <tr><td>Vino Cabernet</td><td>1</td><td>$6.500</td></tr>
+              <tr><td>12:31</td><td>Ron Havana Club</td><td>María</td><td>$13.990</td><td><button class="btn primary small">Ver detalle</button></td></tr>
+              <tr><td>13:04</td><td>Pack Escudo</td><td>Pedro</td><td>$9.990</td><td><button class="btn secondary small">Anular</button></td></tr>
             </tbody>
           </table>
-        </article>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="productos">
+        <div class="panel-grid">
+          <article class="panel-card">
+            <h3>Ejemplo de uso: Productos</h3>
+            <p class="section-text">Desde aquí se crean productos nuevos, se editan precios y se asigna código de barras.</p>
+            <form class="mini-form">
+              <label>Nombre del producto</label>
+              <input type="text" placeholder="Ej: Pisco Alto del Carmen 35°" />
+              <label>Precio</label>
+              <input type="number" placeholder="7990" />
+              <label>Código de barras</label>
+              <input type="text" placeholder="7801234567890" />
+              <button type="button" class="btn primary">Guardar producto</button>
+            </form>
+          </article>
+          <article class="panel-card">
+            <h3>Productos recientes</h3>
+            <ul>
+              <li>Vino Gato Negro - $4.990</li>
+              <li>Whisky Jack Daniel's - $24.990</li>
+              <li>Cerveza Corona Pack - $8.990</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="stock">
+        <div class="panel-grid">
+          <article class="panel-card">
+            <h3>Ejemplo de uso: Stock</h3>
+            <p class="section-text">El administrador puede ingresar reposición, corregir inventario y ver alertas por stock bajo.</p>
+            <table>
+              <thead><tr><th>Producto</th><th>Actual</th><th>Mínimo</th><th>Reponer</th></tr></thead>
+              <tbody>
+                <tr><td>Pisco Alto del Carmen</td><td>3</td><td>10</td><td><button class="btn primary small">Agregar stock</button></td></tr>
+                <tr><td>Red Bull</td><td>5</td><td>12</td><td><button class="btn primary small">Agregar stock</button></td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article class="panel-card">
+            <h3>Movimiento de inventario</h3>
+            <ul>
+              <li>+24 Cervezas Cristal ingresadas hoy</li>
+              <li>-3 Red Bull vendidas</li>
+              <li>-1 Whisky Johnnie Walker vendido</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="boletas">
+        <div class="panel-card">
+          <h3>Ejemplo de uso: Boletas</h3>
+          <p class="section-text">Aquí se revisan boletas emitidas, se busca por fecha y se puede reenviar una boleta digital al cliente.</p>
+          <table>
+            <thead><tr><th>N°</th><th>Fecha</th><th>Monto</th><th>Estado</th><th>Acción</th></tr></thead>
+            <tbody>
+              <tr><td>000321</td><td>10/10/2025</td><td>$11.980</td><td>Emitida</td><td><button class="btn primary small">Reenviar</button></td></tr>
+              <tr><td>000322</td><td>10/10/2025</td><td>$22.990</td><td>Emitida</td><td><button class="btn secondary small">Ver PDF</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="usuarios">
+        <div class="panel-grid">
+          <article class="panel-card">
+            <h3>Ejemplo de uso: Usuarios</h3>
+            <p class="section-text">Se crean cuentas para trabajadores y se asigna el rol que define a qué panel pueden entrar.</p>
+            <form class="mini-form">
+              <label>Nombre</label>
+              <input type="text" placeholder="Ej: María Soto" />
+              <label>Correo</label>
+              <input type="email" placeholder="maria@lacentral.cl" />
+              <label>Rol</label>
+              <select><option>Administrador</option><option>Cajero</option><option>Supervisor</option></select>
+              <button type="button" class="btn primary">Crear usuario</button>
+            </form>
+          </article>
+          <article class="panel-card">
+            <h3>Usuarios activos</h3>
+            <ul>
+              <li>admin@lacentral.cl - Administrador</li>
+              <li>cajero@lacentral.cl - Cajero</li>
+              <li>supervisor@lacentral.cl - Supervisor</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="reportes">
+        <div class="panel-grid">
+          <article class="panel-card">
+            <h3>Ejemplo de uso: Reportes</h3>
+            <p class="section-text">Se revisan métricas del negocio para tomar decisiones: qué se vende más, qué deja más ganancia y qué hay que reponer.</p>
+            <ul>
+              <li>Producto más vendido: Pack Cervezas Cristal</li>
+              <li>Mayor margen: Whisky premium</li>
+              <li>Horario con más ventas: 19:00 a 21:00</li>
+            </ul>
+          </article>
+          <article class="panel-card">
+            <h3>Resumen mensual</h3>
+            <table>
+              <thead><tr><th>Mes</th><th>Ventas</th><th>Boletas</th></tr></thead>
+              <tbody>
+                <tr><td>Agosto</td><td>$4.280.000</td><td>642</td></tr>
+                <tr><td>Septiembre</td><td>$4.910.000</td><td>701</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
       </section>
     </main>
   </div>
 
   <script src="../js/auth.js"></script>
+  <script src="../js/tabs.js"></script>
   <script src="../js/admin.js"></script>
 </body>
 </html>

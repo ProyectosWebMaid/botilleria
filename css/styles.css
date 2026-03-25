@@ -365,3 +365,9 @@ th {
     padding: 14px;
   }
 }
+
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.section-text { color: var(--muted); line-height: 1.7; margin-top: 0; margin-bottom: 16px; }
+.small { padding: 8px 12px; font-size: 13px; }

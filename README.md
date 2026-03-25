@@ -18,3 +18,8 @@ Esta versión mantiene el proyecto separado por archivos y corrige el problema d
 - Administrador: admin@lacentral.cl / 123456
 - Cajero: cajero@lacentral.cl / 123456
 - Supervisor: supervisor@lacentral.cl / 123456
+
+
+## Nuevo en esta versión
+- Cada menú de Administrador, Cajero y Supervisor ahora muestra un ejemplo visual de uso.
+- Se agregó navegación por pestañas dentro de cada panel.

@@ -15,10 +15,10 @@
       </div>
 
       <nav>
-        <a class="active" href="#">Resumen</a>
-        <a href="#">Stock</a>
-        <a href="#">Boletas</a>
-        <a href="#">Reportes</a>
+        <a class="tab-link active" data-tab="resumen" href="#">Resumen</a>
+        <a class="tab-link" data-tab="stock" href="#">Stock</a>
+        <a class="tab-link" data-tab="boletas" href="#">Boletas</a>
+        <a class="tab-link" data-tab="reportes" href="#">Reportes</a>
       </nav>
 
       <button class="btn secondary full" id="logoutBtn">Cerrar sesión</button>
@@ -33,37 +33,89 @@
         <span class="role-pill">Supervisor</span>
       </header>
 
-      <section class="stats-grid">
-        <article class="stat-box"><span>Stock crítico</span><strong>14</strong></article>
-        <article class="stat-box"><span>Boletas del día</span><strong>36</strong></article>
-        <article class="stat-box"><span>Ventas supervisadas</span><strong>$248.900</strong></article>
-        <article class="stat-box"><span>Alertas activas</span><strong>3</strong></article>
+      <section class="tab-panel active" id="resumen">
+        <section class="stats-grid">
+          <article class="stat-box"><span>Stock crítico</span><strong>14</strong></article>
+          <article class="stat-box"><span>Boletas del día</span><strong>36</strong></article>
+          <article class="stat-box"><span>Ventas supervisadas</span><strong>$248.900</strong></article>
+          <article class="stat-box"><span>Alertas activas</span><strong>3</strong></article>
+        </section>
+
+        <section class="panel-grid">
+          <article class="panel-card">
+            <h3>Qué revisa el supervisor</h3>
+            <ul>
+              <li>Control de inventario</li>
+              <li>Estado de boletas</li>
+              <li>Alertas del negocio</li>
+              <li>Operación diaria</li>
+            </ul>
+          </article>
+          <article class="panel-card">
+            <h3>Alertas del día</h3>
+            <ul>
+              <li>Pisco Alto del Carmen: 3 unidades</li>
+              <li>Ron Havana Club: 2 unidades</li>
+              <li>Impresora térmica: revisar conexión</li>
+            </ul>
+          </article>
+        </section>
       </section>
 
-      <section class="panel-grid">
-        <article class="panel-card">
-          <h3>Funciones del supervisor</h3>
-          <ul>
-            <li>Revisar inventario</li>
-            <li>Supervisar ventas</li>
-            <li>Controlar alertas de stock</li>
-            <li>Ver reportes operativos</li>
-          </ul>
-        </article>
+      <section class="tab-panel" id="stock">
+        <div class="panel-card">
+          <h3>Ejemplo de uso: Supervisión de stock</h3>
+          <p class="section-text">Aquí el supervisor detecta productos por debajo del mínimo y avisa que hay que reponer.</p>
+          <table>
+            <thead><tr><th>Producto</th><th>Stock actual</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td>Red Bull</td><td>5</td><td>Bajo</td></tr>
+              <tr><td>Pisco Alto del Carmen</td><td>3</td><td>Crítico</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-        <article class="panel-card">
-          <h3>Alertas del negocio</h3>
+      <section class="tab-panel" id="boletas">
+        <div class="panel-card">
+          <h3>Ejemplo de uso: Revisión de boletas</h3>
           <ul>
-            <li>Pisco Alto del Carmen: 3 unidades</li>
-            <li>Ron Havana Club: 2 unidades</li>
-            <li>Impresora térmica: revisar conexión</li>
+            <li>Boleta 000321 emitida correctamente</li>
+            <li>Boleta 000322 pendiente de reenvío</li>
+            <li>Boleta 000323 validada por el sistema</li>
           </ul>
-        </article>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="reportes">
+        <div class="panel-grid">
+          <article class="panel-card">
+            <h3>Ejemplo de uso: Reportes</h3>
+            <p class="section-text">El supervisor consulta indicadores operativos para informar al administrador.</p>
+            <ul>
+              <li>Productos con mayor rotación</li>
+              <li>Horas con más ventas</li>
+              <li>Artículos con stock bajo</li>
+            </ul>
+          </article>
+          <article class="panel-card">
+            <h3>Resumen rápido</h3>
+            <table>
+              <thead><tr><th>Indicador</th><th>Valor</th></tr></thead>
+              <tbody>
+                <tr><td>Ventas supervisadas</td><td>$248.900</td></tr>
+                <tr><td>Boletas revisadas</td><td>36</td></tr>
+                <tr><td>Alertas críticas</td><td>3</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
       </section>
     </main>
   </div>
 
   <script src="../js/auth.js"></script>
+  <script src="../js/tabs.js"></script>
   <script src="../js/supervisor.js"></script>
 </body>
 </html>

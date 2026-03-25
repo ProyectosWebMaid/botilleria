@@ -15,10 +15,10 @@
       </div>
 
       <nav>
-        <a class="active" href="#">Ventas</a>
-        <a href="#">Caja</a>
-        <a href="#">Boletas</a>
-        <a href="#">Historial</a>
+        <a class="tab-link active" data-tab="ventas" href="#">Ventas</a>
+        <a class="tab-link" data-tab="caja" href="#">Caja</a>
+        <a class="tab-link" data-tab="boletas" href="#">Boletas</a>
+        <a class="tab-link" data-tab="historial" href="#">Historial</a>
       </nav>
 
       <button class="btn secondary full" id="logoutBtn">Cerrar sesión</button>
@@ -33,39 +33,76 @@
         <span class="role-pill">Cajero</span>
       </header>
 
-      <section class="stats-grid">
-        <article class="stat-box"><span>Ventas del turno</span><strong>$89.500</strong></article>
-        <article class="stat-box"><span>Boletas emitidas</span><strong>12</strong></article>
-        <article class="stat-box"><span>Productos vendidos</span><strong>28</strong></article>
-        <article class="stat-box"><span>Caja actual</span><strong>$174.300</strong></article>
+      <section class="tab-panel active" id="ventas">
+        <section class="stats-grid">
+          <article class="stat-box"><span>Ventas del turno</span><strong>$89.500</strong></article>
+          <article class="stat-box"><span>Boletas emitidas</span><strong>12</strong></article>
+          <article class="stat-box"><span>Productos vendidos</span><strong>28</strong></article>
+          <article class="stat-box"><span>Caja actual</span><strong>$174.300</strong></article>
+        </section>
+
+        <section class="panel-grid">
+          <article class="panel-card">
+            <h3>Ejemplo de uso: Registrar venta</h3>
+            <form class="mini-form">
+              <label>Producto</label>
+              <input type="text" placeholder="Escanea o escribe el producto" />
+              <label>Cantidad</label>
+              <input type="number" value="1" min="1" />
+              <label>Método de pago</label>
+              <select><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option></select>
+              <button type="button" class="btn primary">Cobrar venta</button>
+            </form>
+          </article>
+          <article class="panel-card">
+            <h3>Cómo se usaría</h3>
+            <ul>
+              <li>Escaneas el producto</li>
+              <li>Confirmas cantidad</li>
+              <li>Cobras al cliente</li>
+              <li>El sistema descuenta stock y permite emitir boleta</li>
+            </ul>
+          </article>
+        </section>
       </section>
 
-      <section class="panel-grid">
-        <article class="panel-card">
-          <h3>Funciones del cajero</h3>
-          <ul>
-            <li>Registrar ventas</li>
-            <li>Escanear productos</li>
-            <li>Emitir boletas</li>
-            <li>Ver historial del turno</li>
-          </ul>
-        </article>
+      <section class="tab-panel" id="caja">
+        <div class="panel-card">
+          <h3>Ejemplo de uso: Caja</h3>
+          <table>
+            <thead><tr><th>Concepto</th><th>Monto</th></tr></thead>
+            <tbody>
+              <tr><td>Apertura de caja</td><td>$50.000</td></tr>
+              <tr><td>Ventas efectivo</td><td>$62.000</td></tr>
+              <tr><td>Ventas tarjeta</td><td>$27.500</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-        <article class="panel-card">
-          <h3>Nueva venta</h3>
-          <form class="mini-form">
-            <label>Producto</label>
-            <input type="text" placeholder="Escanea o escribe el producto" />
-            <label>Cantidad</label>
-            <input type="number" value="1" min="1" />
-            <button type="button" class="btn primary">Registrar venta</button>
-          </form>
-        </article>
+      <section class="tab-panel" id="boletas">
+        <div class="panel-card">
+          <h3>Ejemplo de uso: Boletas</h3>
+          <p class="section-text">Después de cobrar, el cajero puede emitir la boleta y entregarla impresa o digital.</p>
+          <button class="btn primary">Emitir boleta actual</button>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="historial">
+        <div class="panel-card">
+          <h3>Ejemplo de uso: Historial</h3>
+          <ul>
+            <li>12:03 - Pack Escudo - $9.990</li>
+            <li>12:26 - Vino Cabernet - $6.500</li>
+            <li>13:02 - Ron Havana Club - $13.990</li>
+          </ul>
+        </div>
       </section>
     </main>
   </div>
 
   <script src="../js/auth.js"></script>
+  <script src="../js/tabs.js"></script>
   <script src="../js/cajero.js"></script>
 </body>
 </html>
