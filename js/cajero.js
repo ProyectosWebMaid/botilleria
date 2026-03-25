@@ -1,5 +1,11 @@
 const user = requireRole("Cajero");
 let currentVoucher = null;
+let currentReceiptUrl = null;
+
+function selectedPaymentMethod() {
+  const checked = document.querySelector('input[name="paymentMethod"]:checked');
+  return checked ? checked.value : "Efectivo";
+}
 
 function renderCajero() {
   const data = loadData();
@@ -12,7 +18,8 @@ function renderCajero() {
 
   document.getElementById("cashierReceipts").innerHTML = data.receipts.slice().reverse().map(receipt => {
     const voucher = data.vouchers.find(v => v.id === receipt.voucher_id);
-    const html = buildReceiptHtml(receipt, voucher || { seller: "-", voucher_code: "-", items: [] }, user.email);
+    const paymentMethod = receipt.payment_method || "Efectivo";
+    const html = buildReceiptHtml(receipt, voucher || { seller: "-", voucher_code: "-", items: [] }, user.email, paymentMethod);
     const url = downloadHtml(`boleta-${receipt.id}.html`, html);
     return `<tr><td>${receipt.id}</td><td>${receipt.created_at}</td><td>${money(receipt.amount)}</td><td>${receipt.status}</td><td><a class="btn secondary small" href="${url}" download="boleta-${receipt.id}.html">Descargar</a></td></tr>`;
   }).join("");
@@ -41,6 +48,7 @@ function lookupVoucher(code) {
   `).join("");
   document.getElementById("voucherTotal").textContent = money(voucher.total);
   document.getElementById("downloadReceiptBtn").style.display = "none";
+  document.getElementById("printReceiptBtn").style.display = "none";
 }
 
 document.getElementById("voucherLookupForm").addEventListener("submit", (e) => {
@@ -52,11 +60,32 @@ document.getElementById("voucherLookupForm").addEventListener("submit", (e) => {
   }
 });
 
+document.getElementById("scanVisualBtn").addEventListener("click", () => {
+  const data = loadData();
+  const pending = data.vouchers.find(item => item.status === "Pendiente");
+  if (!pending) {
+    alert("No hay voucher pendientes para simular escaneo.");
+    return;
+  }
+  document.getElementById("voucherCodeInput").value = pending.voucher_code;
+  lookupVoucher(pending.voucher_code);
+});
+
+document.querySelectorAll('.payment-option').forEach((label) => {
+  label.addEventListener('click', () => {
+    document.querySelectorAll('.payment-option').forEach(item => item.classList.remove('active'));
+    label.classList.add('active');
+    const radio = label.querySelector('input[type="radio"]');
+    if (radio) radio.checked = true;
+  });
+});
+
 document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
   if (!currentVoucher) return alert("Primero busca un voucher.");
   if (currentVoucher.status !== "Pendiente") return alert("Este voucher ya fue cobrado.");
 
   const data = loadData();
+  const paymentMethod = selectedPaymentMethod();
 
   for (const item of currentVoucher.items) {
     const product = data.products.find(p => p.id === item.product_id);
@@ -77,7 +106,7 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
       quantity: item.quantity,
       total: item.total,
       cashier: user.email,
-      payment_method: "Cobro en caja",
+      payment_method: paymentMethod,
       created_at: nowString()
     });
   });
@@ -89,21 +118,39 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
     voucher_id: currentVoucher.id,
     amount: currentVoucher.total,
     status: "Emitida",
-    created_at: dateOnly()
+    created_at: dateOnly(),
+    payment_method: paymentMethod
   };
   data.receipts.push(receipt);
   saveData(data);
 
-  const html = buildReceiptHtml(receipt, currentVoucher, user.email);
-  const url = downloadHtml(`boleta-${receipt.id}.html`, html);
-  const link = document.getElementById("downloadReceiptBtn");
-  link.href = url;
-  link.download = `boleta-${receipt.id}.html`;
-  link.style.display = "inline-block";
+  const html = buildReceiptHtml(receipt, currentVoucher, user.email, paymentMethod);
+  currentReceiptUrl = downloadHtml(`boleta-${receipt.id}.html`, html);
 
-  alert(`Cobro realizado. Boleta N° ${receipt.id} emitida.`);
+  const downloadLink = document.getElementById("downloadReceiptBtn");
+  downloadLink.href = currentReceiptUrl;
+  downloadLink.download = `boleta-${receipt.id}.html`;
+  downloadLink.style.display = "inline-block";
+
+  const printBtn = document.getElementById("printReceiptBtn");
+  printBtn.style.display = "inline-block";
+
+  alert(`Cobro realizado. Boleta N° ${receipt.id} emitida para entregar al cliente.`);
   renderCajero();
   lookupVoucher(currentVoucher.voucher_code);
+});
+
+document.getElementById("printReceiptBtn").addEventListener("click", () => {
+  if (!currentReceiptUrl) {
+    alert("Primero debes emitir una boleta.");
+    return;
+  }
+  const printWindow = window.open(currentReceiptUrl, "_blank");
+  if (!printWindow) return;
+  printWindow.onload = () => {
+    printWindow.focus();
+    printWindow.print();
+  };
 });
 
 renderCajero();

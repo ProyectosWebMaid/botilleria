@@ -140,7 +140,7 @@ function buildVoucherHtml(voucher) {
   </style></head><body><div class="ticket"><h1>Botillería La Central</h1><p><strong>Baucher de venta preparada</strong></p><p><span class="code">${voucher.voucher_code}</span></p><div class="barcode">${barcode}</div><p>Vendedor: ${voucher.seller}</p><p>Fecha: ${voucher.created_at}</p><p>Estado: ${voucher.status}</p><table><thead><tr><th>Producto</th><th>Cant.</th><th>Unitario</th><th>Total</th></tr></thead><tbody>${rows}</tbody></table><div class="totals">Total voucher: ${money(voucher.total)}</div><p class="note">Código de barras simulado en formato Code39 para usar como referencia visual y escaneo del código ${voucher.voucher_code}.</p></div></body></html>`;
 }
 
-function buildReceiptHtml(receipt, voucher, cashierEmail) {
+function buildReceiptHtml(receipt, voucher, cashierEmail, paymentMethod = 'Efectivo') {
   const rows = voucher.items.map(item => `
     <tr><td>${item.product}</td><td>${item.quantity}</td><td>${money(item.unit_price)}</td><td>${money(item.total)}</td></tr>
   `).join("");
@@ -151,7 +151,7 @@ function buildReceiptHtml(receipt, voucher, cashierEmail) {
   body{font-family:Arial,sans-serif;background:#f7f7f7;padding:24px;color:#222}.boleta{max-width:760px;margin:0 auto;background:white;border:1px solid #ddd;border-radius:16px;padding:28px}
   h1{margin:0 0 6px;color:#7b1e1e}.small{color:#666;margin:4px 0}table{width:100%;border-collapse:collapse;margin-top:18px}th,td{text-align:left;padding:10px;border-bottom:1px solid #eee}
   .totals{margin-top:18px}.totals p{margin:6px 0}.final{font-size:22px;font-weight:bold;color:#7b1e1e}.stamp{margin-top:20px;padding:12px 14px;border-radius:12px;background:#f5e8e8;color:#7b1e1e;display:inline-block;font-weight:bold}
-  </style></head><body><div class="boleta"><h1>BOTILLERÍA LA CENTRAL</h1><p class="small">Simulación de boleta electrónica chilena</p><p class="small">Boleta N° ${receipt.id}</p><p class="small">Fecha: ${receipt.created_at}</p><p class="small">Cajero: ${cashierEmail}</p><p class="small">Vendedor: ${voucher.seller}</p><p class="small">Voucher origen: ${voucher.voucher_code}</p><table><thead><tr><th>Producto</th><th>Cant.</th><th>Unitario</th><th>Total</th></tr></thead><tbody>${rows}</tbody></table><div class="totals"><p>Neto aproximado: ${money(neto)}</p><p>IVA incluido aproximado: ${money(iva)}</p><p class="final">TOTAL: ${money(receipt.amount)}</p></div><div class="stamp">Documento de simulación descargable</div></div></body></html>`;
+  </style></head><body><div class="boleta"><h1>BOTILLERÍA LA CENTRAL</h1><p class="small">Simulación de boleta electrónica chilena</p><p class="small">Boleta N° ${receipt.id}</p><p class="small">Fecha: ${receipt.created_at}</p><p class="small">Cajero: ${cashierEmail}</p><p class="small">Forma de pago: ${paymentMethod}</p><p class="small">Vendedor: ${voucher.seller}</p><p class="small">Voucher origen: ${voucher.voucher_code}</p><table><thead><tr><th>Producto</th><th>Cant.</th><th>Unitario</th><th>Total</th></tr></thead><tbody>${rows}</tbody></table><div class="totals"><p>Neto aproximado: ${money(neto)}</p><p>IVA incluido aproximado: ${money(iva)}</p><p class="final">TOTAL: ${money(receipt.amount)}</p></div><div class="stamp">Documento de simulación descargable</div></div></body></html>`;
 }
 
 function downloadHtml(filename, html) {

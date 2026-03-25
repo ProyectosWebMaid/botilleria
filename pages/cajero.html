@@ -35,6 +35,16 @@
         <section class="panel-grid">
           <article class="panel-card">
             <h3>Buscar voucher del vendedor</h3>
+            <div class="panel-card scanner-visual-card" style="margin-bottom:16px; padding:16px;">
+              <h4 style="margin:0 0 10px;">Escáner visual</h4>
+              <p class="section-text">Simulación visual de escaneo del baucher.</p>
+              <div class="scanner-box">
+                <div class="scanner-line"></div>
+                <div class="scanner-text">Apunta aquí el baucher del vendedor</div>
+              </div>
+              <button class="btn secondary small" id="scanVisualBtn" type="button">Simular escaneo</button>
+            </div>
+
             <form id="voucherLookupForm" class="mini-form">
               <label>Código de voucher</label>
               <input id="voucherCodeInput" type="text" placeholder="Escanea o escribe el código. Ej: VCH-10000001" />
@@ -49,9 +59,25 @@
                 <tbody id="voucherItemsTable"></tbody>
               </table>
               <p class="voucher-total">Total a cobrar: <strong id="voucherTotal">$0</strong></p>
+
+              <div class="payment-visual-box">
+                <h4 style="margin:0 0 10px;">Forma de pago</h4>
+                <div class="payment-options">
+                  <label class="payment-option active">
+                    <input type="radio" name="paymentMethod" value="Efectivo" checked />
+                    <span>Efectivo</span>
+                  </label>
+                  <label class="payment-option">
+                    <input type="radio" name="paymentMethod" value="Tarjeta" />
+                    <span>Tarjeta</span>
+                  </label>
+                </div>
+              </div>
+
               <div class="link-row">
                 <button class="btn primary" id="chargeVoucherBtn" type="button">Cobrar y emitir boleta</button>
                 <a class="btn secondary" id="downloadReceiptBtn" href="#" style="display:none;">Descargar boleta</a>
+                <button class="btn secondary" id="printReceiptBtn" type="button" style="display:none;">Imprimir boleta</button>
               </div>
             </div>
           </article>

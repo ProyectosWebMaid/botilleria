@@ -162,3 +162,67 @@ th { color: var(--muted); font-size: 13px; }
   .login-card h2, .topbar-page h1 { font-size: 28px; }
   .dashboard { padding: 14px; }
 }
+
+
+.scanner-box {
+  position: relative;
+  height: 140px;
+  border: 2px dashed #b91c1c;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #fff, #faf4f4);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.scanner-line {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 18px;
+  height: 2px;
+  background: #dc2626;
+  box-shadow: 0 0 10px rgba(220,38,38,0.5);
+  animation: scanline 2s linear infinite;
+}
+.scanner-text {
+  color: #7b1e1e;
+  font-weight: 700;
+  text-align: center;
+}
+@keyframes scanline {
+  0% { top: 16px; }
+  50% { top: 118px; }
+  100% { top: 16px; }
+}
+.payment-visual-box {
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+}
+.payment-options {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.payment-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  background: #fafafa;
+  font-weight: 700;
+}
+.payment-option.active {
+  border-color: #7b1e1e;
+  background: #fdf2f2;
+  color: #7b1e1e;
+}
+.payment-option input {
+  width: auto;
+}
