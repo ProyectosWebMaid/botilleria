@@ -17,10 +17,10 @@ function renderSellerCart() {
   });
 }
 
-function loadSellerProducts() {
+function loadSellerProducts(selectedId = null) {
   const products = loadData().products;
   document.getElementById("sellerProduct").innerHTML = products.map(item =>
-    `<option value="${item.id}" data-price="${item.price}">${item.name} - ${money(item.price)} (${item.stock} stock)</option>`
+    `<option value="${item.id}" data-price="${item.price}" data-barcode="${item.barcode || ""}" ${selectedId === item.id ? "selected" : ""}>${item.name} - ${money(item.price)} (${item.stock} stock)</option>`
   ).join("");
 }
 
@@ -31,6 +31,23 @@ function loadSellerVouchers() {
     return `<tr><td>${item.voucher_code}</td><td>${item.created_at}</td><td>${money(item.total)}</td><td>${item.status}</td><td><a class="btn secondary small" href="${url}" download="${item.voucher_code}.html">Descargar</a></td></tr>`;
   }).join("");
 }
+
+
+document.getElementById("sellerBarcodeForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const data = loadData();
+  const query = document.getElementById("sellerBarcodeInput").value.trim();
+  const product = findProductByBarcodeOrName(data, query);
+  const notice = document.getElementById("sellerNotice");
+  if (!product) {
+    notice.textContent = "No se encontró un producto con ese código o nombre.";
+    notice.style.display = "block";
+    return;
+  }
+  loadSellerProducts(product.id);
+  notice.textContent = `Producto encontrado: ${product.name} (${money(product.price)}).`;
+  notice.style.display = "block";
+});
 
 document.getElementById("sellerItemForm").addEventListener("submit", (e) => {
   e.preventDefault();
@@ -48,6 +65,7 @@ document.getElementById("sellerItemForm").addEventListener("submit", (e) => {
   renderSellerCart();
   e.target.reset();
   loadSellerProducts();
+document.getElementById("sellerNotice").style.display = "none";
 });
 
 document.getElementById("generateVoucherBtn").addEventListener("click", () => {
@@ -89,4 +107,5 @@ document.getElementById("generateVoucherBtn").addEventListener("click", () => {
 
 renderSellerCart();
 loadSellerProducts();
+document.getElementById("sellerNotice").style.display = "none";
 loadSellerVouchers();

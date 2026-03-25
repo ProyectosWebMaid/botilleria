@@ -131,11 +131,13 @@ function buildVoucherHtml(voucher) {
   const rows = voucher.items.map(item => `
     <tr><td>${item.product}</td><td>${item.quantity}</td><td>${money(item.unit_price)}</td><td>${money(item.total)}</td></tr>
   `).join("");
+  const barcode = code39Svg(voucher.voucher_code);
   return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${voucher.voucher_code}</title><style>
   body{font-family:Arial,sans-serif;padding:24px;color:#222}.ticket{max-width:720px;margin:0 auto;border:1px solid #ddd;border-radius:16px;padding:24px}
   h1{margin:0 0 8px;color:#7b1e1e}table{width:100%;border-collapse:collapse;margin-top:18px}th,td{text-align:left;padding:10px;border-bottom:1px solid #eee}
   .code{display:inline-block;padding:8px 12px;background:#f5e8e8;border-radius:999px;color:#7b1e1e;font-weight:bold}.totals{margin-top:18px;font-size:18px;font-weight:bold}
-  </style></head><body><div class="ticket"><h1>Botillería La Central</h1><p><strong>Baucher de venta preparada</strong></p><p><span class="code">${voucher.voucher_code}</span></p><p>Vendedor: ${voucher.seller}</p><p>Fecha: ${voucher.created_at}</p><p>Estado: ${voucher.status}</p><table><thead><tr><th>Producto</th><th>Cant.</th><th>Unitario</th><th>Total</th></tr></thead><tbody>${rows}</tbody></table><div class="totals">Total voucher: ${money(voucher.total)}</div></div></body></html>`;
+  .barcode{margin:18px 0;display:flex;justify-content:center}.note{margin-top:16px;color:#666}
+  </style></head><body><div class="ticket"><h1>Botillería La Central</h1><p><strong>Baucher de venta preparada</strong></p><p><span class="code">${voucher.voucher_code}</span></p><div class="barcode">${barcode}</div><p>Vendedor: ${voucher.seller}</p><p>Fecha: ${voucher.created_at}</p><p>Estado: ${voucher.status}</p><table><thead><tr><th>Producto</th><th>Cant.</th><th>Unitario</th><th>Total</th></tr></thead><tbody>${rows}</tbody></table><div class="totals">Total voucher: ${money(voucher.total)}</div><p class="note">Código de barras simulado en formato Code39 para usar como referencia visual y escaneo del código ${voucher.voucher_code}.</p></div></body></html>`;
 }
 
 function buildReceiptHtml(receipt, voucher, cashierEmail) {
@@ -155,4 +157,50 @@ function buildReceiptHtml(receipt, voucher, cashierEmail) {
 function downloadHtml(filename, html) {
   const blob = new Blob([html], { type: "text/html;charset=utf-8" });
   return URL.createObjectURL(blob);
+}
+
+
+const CODE39_PATTERNS = {
+  "0":"101001101101","1":"110100101011","2":"101100101011","3":"110110010101",
+  "4":"101001101011","5":"110100110101","6":"101100110101","7":"101001011011",
+  "8":"110100101101","9":"101100101101","A":"110101001011","B":"101101001011",
+  "C":"110110100101","D":"101011001011","E":"110101100101","F":"101101100101",
+  "G":"101010011011","H":"110101001101","I":"101101001101","J":"101011001101",
+  "K":"110101010011","L":"101101010011","M":"110110101001","N":"101011010011",
+  "O":"110101101001","P":"101101101001","Q":"101010110011","R":"110101011001",
+  "S":"101101011001","T":"101011011001","U":"110010101011","V":"100110101011",
+  "W":"110011010101","X":"100101101011","Y":"110010110101","Z":"100110110101",
+  "-":"100101011011",".":"110010101101"," ":"100110101101","$":"100100100101",
+  "/":"100100101001","+": "100101001001","%":"101001001001","*":"100101101101"
+};
+
+function normalizeCode39(text) {
+  return String(text || "").toUpperCase().replace(/[^0-9A-Z. \\-\\$\\/\\+%]/g, "-");
+}
+
+function code39Svg(text) {
+  const value = "*" + normalizeCode39(text) + "*";
+  let pattern = "";
+  for (const ch of value) {
+    pattern += (CODE39_PATTERNS[ch] || CODE39_PATTERNS["-"]) + "0";
+  }
+  let x = 0;
+  let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${pattern.length * 2 + 20}" height="90" viewBox="0 0 ${pattern.length * 2 + 20} 90">`;
+  svg += `<rect width="100%" height="100%" fill="white"/>`;
+  for (const bit of pattern) {
+    if (bit === "1") svg += `<rect x="${x}" y="8" width="2" height="58" fill="black"/>`;
+    x += 2;
+  }
+  svg += `<text x="${(pattern.length * 2 + 20)/2}" y="82" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#111">${text}</text>`;
+  svg += `</svg>`;
+  return svg;
+}
+
+function findProductByBarcodeOrName(data, query) {
+  const q = String(query || "").trim().toLowerCase();
+  if (!q) return null;
+  return data.products.find(item =>
+    String(item.barcode || "").toLowerCase() === q ||
+    String(item.name || "").toLowerCase().includes(q)
+  ) || null;
 }

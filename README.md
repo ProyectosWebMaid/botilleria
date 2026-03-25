@@ -18,3 +18,9 @@ Esta versión está preparada para subir directamente a GitHub Pages.
 - cajero@lacentral.cl / 123456
 - supervisor@lacentral.cl / 123456
 - vendedor@lacentral.cl / 123456
+
+
+## Mejoras agregadas
+- El baucher descargado ahora incluye un código de barras visual (Code39 simulado).
+- En Vendedor puedes buscar productos escaneando/escribiendo el código de barras o ingresando el nombre manualmente.
+- El Cajero puede seguir cobrando voucher escribiendo o escaneando el código del baucher.

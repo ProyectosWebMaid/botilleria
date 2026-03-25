@@ -27,8 +27,14 @@
         <section class="panel-grid">
           <article class="panel-card">
             <h3>Escaneo / registro de productos</h3>
+            <form id="sellerBarcodeForm" class="mini-form">
+              <label>Escanear código o escribir nombre</label>
+              <input id="sellerBarcodeInput" type="text" placeholder="Ej: 7801111111111 o Whisky Johnnie Walker" />
+              <button class="btn secondary" type="submit">Buscar producto</button>
+            </form>
+
             <form id="sellerItemForm" class="mini-form">
-              <label>Producto</label>
+              <label>Producto encontrado / selección manual</label>
               <select id="sellerProduct"></select>
               <label>Cantidad</label>
               <input id="sellerQty" type="number" min="1" value="1" />
