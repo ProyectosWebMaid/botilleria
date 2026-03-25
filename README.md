@@ -1,34 +1,32 @@
-# Botillería La Central - Sistema con roles
+# Botillería La Central - Sistema real con base de datos
 
-Esta versión mantiene el proyecto separado por archivos y corrige el problema de rutas para que el CSS cargue bien.
+Esta versión incluye backend con Node.js + Express + SQLite y ahora agrega el rol de **Vendedor**.
 
-## Estructura
-- index.html
-- css/styles.css
-- js/login.js
-- js/auth.js
-- js/admin.js
-- js/cajero.js
-- js/supervisor.js
-- pages/admin.html
-- pages/cajero.html
-- pages/supervisor.html
+## Nuevas funciones
+- Rol **Vendedor**
+- El vendedor registra productos y genera un **baucher**
+- El baucher queda descargable como archivo HTML
+- El **Cajero** busca o "escanea" el código del baucher
+- Al cobrar:
+  - se carga la venta preparada por el vendedor
+  - se descuenta el stock
+  - se emite una **boleta simulada chilena**
+  - la boleta queda descargable
 
-## Usuarios demo
+## Roles demo
 - Administrador: admin@lacentral.cl / 123456
 - Cajero: cajero@lacentral.cl / 123456
 - Supervisor: supervisor@lacentral.cl / 123456
+- Vendedor: vendedor@lacentral.cl / 123456
 
+## Instalación
+1. Abre terminal en la carpeta del proyecto
+2. Ejecuta:
+   npm install
+3. Luego:
+   npm start
+4. Abre:
+   http://localhost:3000
 
-## Nuevo en esta versión
-- Cada menú de Administrador, Cajero y Supervisor ahora muestra un ejemplo visual de uso.
-- Se agregó navegación por pestañas dentro de cada panel.
-
-
-## v4 implementada
-- Formularios funcionales con localStorage.
-- Alta y eliminación de productos.
-- Registro real de ventas desde cajero.
-- Descuento automático de stock.
-- Generación automática de boletas.
-- Reportes y panel supervisor conectados a los mismos datos.
+## Nota
+La boleta y el baucher son simulaciones descargables en HTML para esta etapa.
