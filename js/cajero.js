@@ -243,16 +243,28 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
     alert("Primero busca un voucher.");
     return;
   }
-  if (currentVoucher.status !== "Pendiente") {
-    alert("⚠️ Este voucher ya fue cobrado. No se puede procesar nuevamente.");
-    renderVoucherUsageAlert(currentVoucher);
+
+  const data = loadData();
+  const freshVoucher = data.vouchers.find(item => item.id === currentVoucher.id);
+
+  if (!freshVoucher) {
+    alert("El voucher ya no existe.");
+    resetForNewSale();
     return;
   }
 
-  const data = loadData();
+  if (freshVoucher.status !== "Pendiente") {
+    currentVoucher = freshVoucher;
+    alert("⚠️ Este voucher ya fue cobrado. No se puede procesar nuevamente.");
+    renderVoucherUsageAlert(freshVoucher);
+    document.getElementById("voucherMeta").textContent =
+      `Vendedor: ${freshVoucher.seller} | Fecha: ${freshVoucher.created_at} | Estado: ${freshVoucher.status}`;
+    return;
+  }
+
   const paymentMethod = selectedPaymentMethod();
 
-  for (const item of currentVoucher.items) {
+  for (const item of freshVoucher.items) {
     const product = data.products.find(p => p.id === item.product_id);
     if (!product || product.stock < item.quantity) {
       alert(`Stock insuficiente para ${item.product}.`);
@@ -260,13 +272,13 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
     }
   }
 
-  currentVoucher.items.forEach(item => {
+  freshVoucher.items.forEach(item => {
     const product = data.products.find(p => p.id === item.product_id);
     product.stock -= item.quantity;
     data.sales.push({
       id: nextId(data.sales),
-      voucher_code: currentVoucher.voucher_code,
-      seller: currentVoucher.seller,
+      voucher_code: freshVoucher.voucher_code,
+      seller: freshVoucher.seller,
       product_id: item.product_id,
       product: item.product,
       quantity: item.quantity,
@@ -277,12 +289,12 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
     });
   });
 
-  currentVoucher.status = "Cobrado";
+  freshVoucher.status = "Cobrado";
 
   const receipt = {
     id: data.receipts.length ? Math.max(...data.receipts.map(item => item.id)) + 1 : 321,
-    voucher_id: currentVoucher.id,
-    amount: currentVoucher.total,
+    voucher_id: freshVoucher.id,
+    amount: freshVoucher.total,
     status: "Emitida",
     created_at: dateOnly(),
     payment_method: paymentMethod
@@ -290,11 +302,13 @@ document.getElementById("chargeVoucherBtn").addEventListener("click", () => {
   data.receipts.push(receipt);
   saveData(data);
 
-  currentReceiptHtml = buildReceiptHtml(receipt, currentVoucher, user.email, paymentMethod);
+  currentVoucher = freshVoucher;
+  currentReceiptHtml = buildReceiptHtml(receipt, freshVoucher, user.email, paymentMethod);
 
   const opened = openReceiptPage(currentReceiptHtml);
   if (!opened) return;
 
+  renderVoucherUsageAlert(freshVoucher);
   renderCajero();
 });
 
