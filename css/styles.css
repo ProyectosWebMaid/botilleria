@@ -10,8 +10,8 @@
   --text: #1f2937;
   --muted: #6b7280;
   --border: #e5e7eb;
-  --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-  --radius: 20px;
+  --shadow: 0 18px 42px rgba(0, 0, 0, 0.10);
+  --radius: 22px;
 }
 
 body {
@@ -35,6 +35,7 @@ body {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 24px;
+  align-items: stretch;
 }
 
 .hero-panel,
@@ -48,7 +49,7 @@ body {
 }
 
 .hero-panel {
-  padding: 40px;
+  padding: 42px;
   background: linear-gradient(135deg, rgba(123,30,30,0.98), rgba(73,18,18,0.96));
   color: white;
 }
@@ -65,25 +66,29 @@ body {
 
 .hero-panel h1 {
   margin: 0 0 12px;
-  font-size: 44px;
+  font-size: 48px;
+  line-height: 1.05;
 }
 
 .hero-panel p {
-  line-height: 1.6;
+  line-height: 1.7;
   color: rgba(255,255,255,0.92);
+  font-size: 16px;
+  margin: 0;
 }
 
 .feature-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 26px;
 }
 
 .feature-card {
   background: rgba(255,255,255,0.11);
-  padding: 14px;
+  padding: 16px;
   border-radius: 16px;
+  font-weight: 700;
 }
 
 .login-card {
@@ -91,8 +96,8 @@ body {
 }
 
 .logo {
-  width: 64px;
-  height: 64px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -105,6 +110,7 @@ body {
 .login-card h2 {
   margin: 0 0 8px;
   color: var(--vino);
+  font-size: 36px;
 }
 
 .muted {
@@ -114,6 +120,7 @@ body {
 
 .muted-light {
   color: rgba(255,255,255,0.8);
+  margin: 0 0 20px;
 }
 
 label {
@@ -126,16 +133,18 @@ label {
 input,
 select {
   width: 100%;
-  padding: 13px 14px;
+  padding: 14px 15px;
   border: 1px solid var(--border);
   border-radius: 14px;
   font-size: 15px;
   outline: none;
+  background: white;
 }
 
 input:focus,
 select:focus {
   border-color: var(--vino);
+  box-shadow: 0 0 0 4px rgba(123, 30, 30, 0.10);
 }
 
 .btn {
@@ -144,6 +153,7 @@ select:focus {
   padding: 12px 16px;
   font-weight: 700;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .btn.primary {
@@ -153,6 +163,7 @@ select:focus {
 
 .btn.primary:hover {
   background: var(--vino-dark);
+  transform: translateY(-1px);
 }
 
 .btn.secondary {
@@ -180,6 +191,7 @@ select:focus {
   margin: 0;
   padding-left: 18px;
   color: var(--muted);
+  line-height: 1.8;
 }
 
 .dashboard {
@@ -198,6 +210,7 @@ select:focus {
 
 .sidebar h2 {
   margin: 0 0 6px;
+  font-size: 28px;
 }
 
 .sidebar nav {
@@ -234,6 +247,7 @@ select:focus {
 
 .topbar-page h1 {
   margin: 0 0 6px;
+  font-size: 36px;
 }
 
 .topbar-page p {
@@ -256,7 +270,7 @@ select:focus {
 }
 
 .stat-box {
-  padding: 18px;
+  padding: 20px;
 }
 
 .stat-box span {
@@ -267,7 +281,7 @@ select:focus {
 }
 
 .stat-box strong {
-  font-size: 28px;
+  font-size: 30px;
   color: var(--vino);
 }
 
@@ -278,18 +292,19 @@ select:focus {
 }
 
 .panel-card {
-  padding: 20px;
+  padding: 22px;
 }
 
 .panel-card h3 {
   margin-top: 0;
+  font-size: 22px;
 }
 
 .panel-card ul {
   margin: 0;
   padding-left: 18px;
   color: var(--muted);
-  line-height: 1.8;
+  line-height: 1.9;
 }
 
 table {
@@ -338,7 +353,12 @@ th {
   }
 
   .hero-panel h1 {
-    font-size: 34px;
+    font-size: 36px;
+  }
+
+  .login-card h2,
+  .topbar-page h1 {
+    font-size: 28px;
   }
 
   .dashboard {

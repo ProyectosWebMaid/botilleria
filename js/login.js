@@ -3,19 +3,19 @@ const demoUsers = [
     email: "admin@lacentral.cl",
     password: "123456",
     role: "Administrador",
-    redirect: "pages/admin.html",
+    redirect: "./pages/admin.html",
   },
   {
     email: "cajero@lacentral.cl",
     password: "123456",
     role: "Cajero",
-    redirect: "pages/cajero.html",
+    redirect: "./pages/cajero.html",
   },
   {
     email: "supervisor@lacentral.cl",
     password: "123456",
     role: "Supervisor",
-    redirect: "pages/supervisor.html",
+    redirect: "./pages/supervisor.html",
   },
 ];
 
