@@ -1,22 +1,31 @@
-# Botillería La Central
-
-Proyecto base ordenado para una botillería.
+# Botillería La Central - Sistema con roles
 
 ## Estructura
 
-- `index.html`: página principal con login, dashboard y módulos visibles.
-- `css/styles.css`: estilos separados del proyecto.
-- `js/app.js`: interacción básica del login.
+- `index.html` -> login principal
+- `css/styles.css` -> estilos globales
+- `js/login.js` -> login y redirección por rol
+- `js/auth.js` -> protección de páginas
+- `js/admin.js` -> acceso solo administrador
+- `js/cajero.js` -> acceso solo cajero
+- `js/supervisor.js` -> acceso solo supervisor
+- `pages/admin.html` -> panel administrador
+- `pages/cajero.html` -> panel cajero
+- `pages/supervisor.html` -> panel supervisor
 
-## Qué incluye
+## Usuarios demo
 
-- Login inicial
-- Panel administrativo
-- Resumen de ventas
-- Stock bajo
-- Módulos de boletas, reportes, clientes y soporte
-- Diseño responsive
+- Administrador: `admin@lacentral.cl` / `123456`
+- Cajero: `cajero@lacentral.cl` / `123456`
+- Supervisor: `supervisor@lacentral.cl` / `123456`
 
-## Cómo abrirlo
+## Cómo funciona
 
-Abre `index.html` en tu navegador.
+1. El usuario inicia sesión desde `index.html`.
+2. Si las credenciales coinciden, se guarda el usuario en `localStorage`.
+3. El sistema redirige al panel correspondiente según el rol.
+4. Cada página valida el rol antes de mostrar contenido.
+
+## Nota
+
+Este proyecto es una base frontend de demostración. Para producción debes conectarlo a backend y base de datos real.

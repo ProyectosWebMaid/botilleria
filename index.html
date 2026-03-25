@@ -3,262 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Botillería La Central | Sistema Web</title>
+  <title>Botillería La Central | Login</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-badge">🍷</div>
-      <div>
-        <h1>Botillería La Central</h1>
-        <p>Sistema web de gestión</p>
+<body class="login-body">
+  <div class="login-shell">
+    <section class="hero-panel">
+      <span class="badge">Sistema web con roles</span>
+      <h1>Botillería La Central</h1>
+      <p>
+        Ingresa al sistema según tu rol. Cada usuario entra a su panel correspondiente:
+        Administrador, Cajero o Supervisor.
+      </p>
+      <div class="feature-list">
+        <div class="feature-card">Ventas rápidas</div>
+        <div class="feature-card">Control de stock</div>
+        <div class="feature-card">Boletas</div>
+        <div class="feature-card">Reportes</div>
       </div>
-    </div>
-    <nav class="top-actions">
-      <a href="#login" class="btn btn-secondary">Login</a>
-      <a href="#dashboard" class="btn btn-primary">Panel</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <div class="hero-content">
-      <div class="hero-card">
-        <span class="eyebrow">Proyecto base completo</span>
-        <h2>Ventas, stock, boletas y control del negocio en un solo lugar</h2>
-        <p>
-          Este inicio está pensado como base para una botillería: acceso con login,
-          panel administrativo, ventas, inventario, boletas y reportes.
-        </p>
-        <div class="hero-grid">
-          <div class="hero-item">Registro de ventas rápidas</div>
-          <div class="hero-item">Descuento automático de stock</div>
-          <div class="hero-item">Boletas y comprobantes</div>
-          <div class="hero-item">Acceso desde celular o computador</div>
-        </div>
-      </div>
-
-      <div class="login-card" id="login">
-        <div class="login-header">
-          <h3>Iniciar sesión</h3>
-          <p>Accede al sistema de Botillería La Central</p>
-        </div>
-
-        <form id="loginForm">
-          <div class="field">
-            <label for="email">Correo</label>
-            <input id="email" type="email" placeholder="admin@lacentral.cl" />
-          </div>
-
-          <div class="field">
-            <label for="password">Contraseña</label>
-            <input id="password" type="password" placeholder="••••••••" />
-          </div>
-
-          <div class="field">
-            <label for="role">Perfil</label>
-            <select id="role">
-              <option>Administrador</option>
-              <option>Cajero</option>
-              <option>Supervisor</option>
-            </select>
-          </div>
-
-          <button type="submit" class="btn btn-primary full">Ingresar al sistema</button>
-          <p class="help-text">Soporte 24/7 incluido</p>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <main class="app" id="dashboard">
-    <aside class="sidebar">
-      <div class="sidebar-brand">
-        <h3>La Central</h3>
-        <p>Panel principal</p>
-      </div>
-
-      <div class="nav-group">
-        <p class="nav-title">General</p>
-        <a class="nav-link active" href="#dashboard">Dashboard</a>
-        <a class="nav-link" href="#ventas">Ventas / Caja</a>
-        <a class="nav-link" href="#inventario">Inventario</a>
-        <a class="nav-link" href="#boletas">Boletas</a>
-        <a class="nav-link" href="#reportes">Reportes</a>
-      </div>
-
-      <div class="nav-group">
-        <p class="nav-title">Administración</p>
-        <a class="nav-link" href="#clientes">Clientes</a>
-        <a class="nav-link" href="#proveedores">Proveedores</a>
-        <a class="nav-link" href="#usuarios">Usuarios</a>
-        <a class="nav-link" href="#soporte">Soporte</a>
-      </div>
-    </aside>
-
-    <section class="content">
-      <section class="page-head">
-        <div>
-          <h2>Resumen del negocio</h2>
-          <p>Vista general del sistema y módulos principales</p>
-        </div>
-        <div class="top-actions">
-          <button class="btn btn-secondary">Emitir boleta</button>
-          <button class="btn btn-primary">Nueva venta</button>
-        </div>
-      </section>
-
-      <section class="stats">
-        <article class="stat-card">
-          <span>Ventas del día</span>
-          <strong>$248.900</strong>
-        </article>
-        <article class="stat-card">
-          <span>Boletas emitidas</span>
-          <strong>36</strong>
-        </article>
-        <article class="stat-card">
-          <span>Productos activos</span>
-          <strong>182</strong>
-        </article>
-        <article class="stat-card">
-          <span>Reposición pendiente</span>
-          <strong>14</strong>
-        </article>
-      </section>
-
-      <section class="content-grid">
-        <article class="card" id="ventas">
-          <div class="card-head">
-            <h3>Últimas ventas</h3>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Total</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Whisky Johnnie Walker</td>
-                <td>1</td>
-                <td>$22.990</td>
-                <td><span class="status ok">Pagado</span></td>
-              </tr>
-              <tr>
-                <td>Pack Cervezas Cristal</td>
-                <td>2</td>
-                <td>$11.980</td>
-                <td><span class="status ok">Pagado</span></td>
-              </tr>
-              <tr>
-                <td>Vino Cabernet</td>
-                <td>1</td>
-                <td>$6.500</td>
-                <td><span class="status warn">Pendiente</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </article>
-
-        <article class="card" id="inventario">
-          <div class="card-head">
-            <h3>Stock bajo</h3>
-          </div>
-          <div class="list">
-            <div class="list-item">
-              <strong>Pisco Alto del Carmen</strong>
-              <small>Quedan 3 unidades</small>
-            </div>
-            <div class="list-item">
-              <strong>Red Bull</strong>
-              <small>Quedan 5 unidades</small>
-            </div>
-            <div class="list-item">
-              <strong>Ron Havana Club</strong>
-              <small>Quedan 2 unidades</small>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section class="modules">
-        <article class="module-card" id="boletas">
-          <h3>Boletas</h3>
-          <p>Emisión, impresión o envío digital de boletas desde el sistema.</p>
-          <div class="tags">
-            <span>Boleta digital</span>
-            <span>Historial</span>
-            <span>Impresora térmica</span>
-          </div>
-        </article>
-
-        <article class="module-card" id="reportes">
-          <h3>Reportes</h3>
-          <p>Ventas diarias, productos más vendidos y resumen del negocio.</p>
-          <div class="tags">
-            <span>Ventas</span>
-            <span>Ganancias</span>
-            <span>Top productos</span>
-          </div>
-        </article>
-
-        <article class="module-card" id="clientes">
-          <h3>Clientes y proveedores</h3>
-          <p>Registro básico para compras frecuentes y control de abastecimiento.</p>
-          <div class="tags">
-            <span>Clientes</span>
-            <span>Compras</span>
-            <span>Proveedores</span>
-          </div>
-        </article>
-
-        <article class="module-card" id="usuarios">
-          <h3>Usuarios y soporte</h3>
-          <p>Roles por usuario, acceso seguro y soporte técnico 24/7.</p>
-          <div class="tags">
-            <span>Roles</span>
-            <span>Seguridad</span>
-            <span>Soporte</span>
-          </div>
-        </article>
-      </section>
-
-      <section class="project-grid">
-        <article class="card">
-          <div class="card-head">
-            <h3>Qué incluye el proyecto</h3>
-          </div>
-          <ul>
-            <li>Login seguro</li>
-            <li>Dashboard administrativo</li>
-            <li>Módulo de ventas y caja</li>
-            <li>Control de stock</li>
-            <li>Módulo de boletas</li>
-            <li>Reportes</li>
-            <li>Usuarios y permisos</li>
-          </ul>
-        </article>
-
-        <article class="card" id="soporte">
-          <div class="card-head">
-            <h3>Qué necesita el local</h3>
-          </div>
-          <ul>
-            <li>Computador, tablet o celular</li>
-            <li>Conexión a internet</li>
-            <li>Lector de código de barras</li>
-            <li>Impresora térmica opcional</li>
-            <li>Lista de productos y precios</li>
-          </ul>
-        </article>
-      </section>
     </section>
-  </main>
 
-  <script src="js/app.js"></script>
+    <section class="login-card">
+      <div class="logo">🍷</div>
+      <h2>Iniciar sesión</h2>
+      <p class="muted">Accede a tu panel según el rol asignado</p>
+
+      <form id="loginForm">
+        <label for="email">Correo</label>
+        <input id="email" type="email" placeholder="admin@lacentral.cl" required />
+
+        <label for="password">Contraseña</label>
+        <input id="password" type="password" placeholder="******" required />
+
+        <label for="role">Rol</label>
+        <select id="role" required>
+          <option value="Administrador">Administrador</option>
+          <option value="Cajero">Cajero</option>
+          <option value="Supervisor">Supervisor</option>
+        </select>
+
+        <button type="submit" class="btn primary full">Ingresar</button>
+      </form>
+
+      <div class="demo-users">
+        <h3>Usuarios demo</h3>
+        <ul>
+          <li><strong>Administrador:</strong> admin@lacentral.cl / 123456</li>
+          <li><strong>Cajero:</strong> cajero@lacentral.cl / 123456</li>
+          <li><strong>Supervisor:</strong> supervisor@lacentral.cl / 123456</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/login.js"></script>
 </body>
 </html>

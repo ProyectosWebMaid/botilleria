@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cajero | Botillería La Central</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <h2>La Central</h2>
+      <p class="muted-light">Panel Cajero</p>
+      <nav>
+        <a class="active" href="#">Ventas</a>
+        <a href="#">Caja</a>
+        <a href="#">Boletas</a>
+        <a href="#">Historial</a>
+      </nav>
+      <button class="btn secondary full" id="logoutBtn">Cerrar sesión</button>
+    </aside>
+
+    <main class="content">
+      <header class="topbar-page">
+        <div>
+          <h1>Panel de Cajero</h1>
+          <p id="welcomeText"></p>
+        </div>
+        <span class="role-pill">Cajero</span>
+      </header>
+
+      <section class="stats-grid">
+        <article class="stat-box"><span>Ventas del turno</span><strong>$89.500</strong></article>
+        <article class="stat-box"><span>Boletas emitidas</span><strong>12</strong></article>
+        <article class="stat-box"><span>Productos vendidos</span><strong>28</strong></article>
+        <article class="stat-box"><span>Caja actual</span><strong>$174.300</strong></article>
+      </section>
+
+      <section class="panel-grid">
+        <article class="panel-card">
+          <h3>Funciones del cajero</h3>
+          <ul>
+            <li>Registrar ventas</li>
+            <li>Escanear productos</li>
+            <li>Emitir boletas</li>
+            <li>Ver historial del turno</li>
+          </ul>
+        </article>
+
+        <article class="panel-card">
+          <h3>Nueva venta</h3>
+          <form class="mini-form">
+            <label>Producto</label>
+            <input type="text" placeholder="Escanea o escribe el producto" />
+            <label>Cantidad</label>
+            <input type="number" value="1" min="1" />
+            <button type="button" class="btn primary">Registrar venta</button>
+          </form>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/cajero.js"></script>
+</body>
+</html>

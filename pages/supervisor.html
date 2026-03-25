@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supervisor | Botillería La Central</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <h2>La Central</h2>
+      <p class="muted-light">Panel Supervisor</p>
+      <nav>
+        <a class="active" href="#">Resumen</a>
+        <a href="#">Stock</a>
+        <a href="#">Boletas</a>
+        <a href="#">Reportes</a>
+      </nav>
+      <button class="btn secondary full" id="logoutBtn">Cerrar sesión</button>
+    </aside>
+
+    <main class="content">
+      <header class="topbar-page">
+        <div>
+          <h1>Panel de Supervisor</h1>
+          <p id="welcomeText"></p>
+        </div>
+        <span class="role-pill">Supervisor</span>
+      </header>
+
+      <section class="stats-grid">
+        <article class="stat-box"><span>Stock crítico</span><strong>14</strong></article>
+        <article class="stat-box"><span>Boletas del día</span><strong>36</strong></article>
+        <article class="stat-box"><span>Ventas supervisadas</span><strong>$248.900</strong></article>
+        <article class="stat-box"><span>Alertas activas</span><strong>3</strong></article>
+      </section>
+
+      <section class="panel-grid">
+        <article class="panel-card">
+          <h3>Funciones del supervisor</h3>
+          <ul>
+            <li>Revisar inventario</li>
+            <li>Supervisar ventas</li>
+            <li>Controlar alertas de stock</li>
+            <li>Ver reportes operativos</li>
+          </ul>
+        </article>
+
+        <article class="panel-card">
+          <h3>Alertas del negocio</h3>
+          <ul>
+            <li>Pisco Alto del Carmen: 3 unidades</li>
+            <li>Ron Havana Club: 2 unidades</li>
+            <li>Impresora térmica: revisar conexión</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/supervisor.js"></script>
+</body>
+</html>

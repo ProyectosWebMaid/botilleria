@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administrador | Botillería La Central</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <h2>La Central</h2>
+      <p class="muted-light">Panel Administrador</p>
+      <nav>
+        <a class="active" href="#">Dashboard</a>
+        <a href="#">Ventas</a>
+        <a href="#">Productos</a>
+        <a href="#">Stock</a>
+        <a href="#">Boletas</a>
+        <a href="#">Usuarios</a>
+        <a href="#">Reportes</a>
+      </nav>
+      <button class="btn secondary full" id="logoutBtn">Cerrar sesión</button>
+    </aside>
+
+    <main class="content">
+      <header class="topbar-page">
+        <div>
+          <h1>Panel de Administrador</h1>
+          <p id="welcomeText"></p>
+        </div>
+        <span class="role-pill">Administrador</span>
+      </header>
+
+      <section class="stats-grid">
+        <article class="stat-box"><span>Ventas del día</span><strong>$248.900</strong></article>
+        <article class="stat-box"><span>Boletas emitidas</span><strong>36</strong></article>
+        <article class="stat-box"><span>Productos activos</span><strong>182</strong></article>
+        <article class="stat-box"><span>Usuarios del sistema</span><strong>4</strong></article>
+      </section>
+
+      <section class="panel-grid">
+        <article class="panel-card">
+          <h3>Accesos del administrador</h3>
+          <ul>
+            <li>Crear y editar productos</li>
+            <li>Configurar precios</li>
+            <li>Gestionar stock y reposición</li>
+            <li>Emitir boletas</li>
+            <li>Crear usuarios y asignar roles</li>
+            <li>Ver reportes completos</li>
+          </ul>
+        </article>
+
+        <article class="panel-card">
+          <h3>Últimas ventas</h3>
+          <table>
+            <thead>
+              <tr><th>Producto</th><th>Cantidad</th><th>Total</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Whisky Johnnie Walker</td><td>1</td><td>$22.990</td></tr>
+              <tr><td>Pack Cervezas Cristal</td><td>2</td><td>$11.980</td></tr>
+              <tr><td>Vino Cabernet</td><td>1</td><td>$6.500</td></tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>
