@@ -1,0 +1,14 @@
+{
+  "name": "botilleria-la-central-online",
+  "version": "1.0.0",
+  "description": "Sistema web para botilleria con Node.js, Express y SQLite",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^9.4.3",
+    "express": "^4.19.2"
+  }
+}
