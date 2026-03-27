@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MaildTech | Proyectos</title>
+  <meta name="description" content="Portafolio de proyectos y demos desarrollados por MaildTech." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="topbar">
+    <div class="container nav">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">MT</span>
+        <span class="brand-copy">
+          <strong>MaildTech</strong>
+          <small>Portafolio de soluciones</small>
+        </span>
+      </a>
+
+      <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+
+      <nav class="nav-links">
+        <a href="index.html#inicio">Inicio</a>
+        <a href="index.html#soluciones">Soluciones</a>
+        <a href="proyectos.html">Proyectos</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+
+      <a class="btn btn-secondary nav-cta" href="index.html#contacto">Cotizar</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero projects-hero">
+      <div class="container">
+        <div class="projects-intro reveal">
+          <div class="pill">
+            <span class="pill-dot"></span>
+            Portafolio MaildTech
+          </div>
+          <h1>Proyectos con una <span class="gradient-text">presentación sólida, moderna y profesional</span></h1>
+          <p class="lead">Esta vitrina está pensada para mostrar tus soluciones con más categoría. Aquí tus proyectos se ven como trabajo serio, no como links sueltos.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#lista-proyectos">Ver proyectos</a>
+            <a class="btn btn-secondary" href="index.html">Volver al inicio</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="lista-proyectos">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="pill">
+              <span class="pill-dot"></span>
+              Proyectos destacados
+            </div>
+            <h2>Demos y soluciones presentadas con mejor experiencia visual</h2>
+          </div>
+          <p>Los botones “Abrir proyecto” quedan deshabilitados por ahora. Los “Ver demo” llevan a las demos activas o temporales mientras sigues construyendo tu portafolio.</p>
+        </div>
+
+        <div class="cards-grid three">
+          <article class="solution-card reveal project-showcase">
+            <div class="solution-top">
+              <span class="kicker">Proyecto 01</span>
+              <span class="tag">Demo activa</span>
+            </div>
+            <h3>Sistema para botillería</h3>
+            <p>Una solución orientada a ventas, control de productos y una operación más clara para negocios que necesitan rapidez y orden.</p>
+            <strong class="metric">Control + facturación</strong>
+            <div class="chips">
+              <span>Ventas</span>
+              <span>Inventario</span>
+              <span>Operación</span>
+            </div>
+            <div class="project-buttons">
+              <span class="btn btn-disabled" aria-disabled="true">Abrir proyecto</span>
+              <a class="btn btn-secondary" href="https://proyectoswebmaid.github.io/botilleria/" target="_blank" rel="noopener">Ver demo</a>
+            </div>
+          </article>
+
+          <article class="solution-card reveal project-showcase">
+            <div class="solution-top">
+              <span class="kicker">Proyecto 02</span>
+              <span class="tag demo-tag">Demo temporal</span>
+            </div>
+            <h3>Página corporativa premium</h3>
+            <p>Una muestra de cómo un negocio o empresa puede presentarse con más seriedad, diseño y capacidad de transmitir confianza.</p>
+            <strong class="metric">Imagen + confianza</strong>
+            <div class="chips">
+              <span>Branding</span>
+              <span>Landing</span>
+              <span>Responsive</span>
+            </div>
+            <div class="project-buttons">
+              <span class="btn btn-disabled" aria-disabled="true">Abrir proyecto</span>
+              <a class="btn btn-secondary" href="demo-corporativa.html">Ver demo</a>
+            </div>
+          </article>
+
+          <article class="solution-card reveal project-showcase">
+            <div class="solution-top">
+              <span class="kicker">Proyecto 03</span>
+              <span class="tag demo-tag">Demo temporal</span>
+            </div>
+            <h3>Dashboard de control interno</h3>
+            <p>Una demo para mostrar cómo visualizar métricas, tareas, movimientos y datos con una interfaz moderna y útil.</p>
+            <strong class="metric">Datos + visibilidad</strong>
+            <div class="chips">
+              <span>KPIs</span>
+              <span>Usuarios</span>
+              <span>Reportes</span>
+            </div>
+            <div class="project-buttons">
+              <span class="btn btn-disabled" aria-disabled="true">Abrir proyecto</span>
+              <a class="btn btn-secondary" href="demo-dashboard.html">Ver demo</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <a class="whatsapp-float" href="https://wa.me/56999981328?text=Hola%20MaildTech,%20quiero%20ver%20una%20solucion%20para%20mi%20negocio" target="_blank" rel="noopener" aria-label="WhatsApp">✆</a>
+
+  <script src="script.js"></script>
+</body>
+</html>
